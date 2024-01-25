@@ -1,0 +1,9 @@
+version: '3.9'
+
+services:
+  nextapp:
+    container_name: oop_fe
+    image: phong28zk/oop_fe
+    build: .
+    ports:
+      - "3000:3000"
