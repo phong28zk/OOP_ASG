@@ -1,9 +1,10 @@
+import * as React from "react";
 import Link from "next/link";
 import { Suspense } from "react";
 import Search from "./search";
 import OpenCart from "@/components/cart/open-cart";
+import { ModeToggle } from "@/components/global/toggle-theme";
 
-const { SITE_NAME } = process.env;
 
 const menu = [
   {
@@ -38,7 +39,7 @@ export default async function Navbar() {
             className="mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6"
           >
             <div className="ml-2 flex-none text-sm font-medium uppercase md:hidden lg:block">
-              {SITE_NAME}
+              Clothes Shop
             </div>
           </Link>
           {menu.length ? (
@@ -59,9 +60,10 @@ export default async function Navbar() {
         <div className="hidden justify-center md:flex md:w-1/3">
           <Search />
         </div>
-        
-        <div className="flex justify-end md:w-1/3">
-          <Suspense fallback={<OpenCart />}>Cart</Suspense>
+
+        <div className="flex items-center justify-end md:w-1/3 gap-4">
+          <ModeToggle />
+          <span>Cart</span>
         </div>
       </div>
     </nav>
