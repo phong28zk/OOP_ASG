@@ -1,37 +1,44 @@
 import * as React from "react";
 import Link from "next/link";
-import { Suspense } from "react";
 import Search from "./search";
-import OpenCart from "@/components/cart/open-cart";
 import { ModeToggle } from "@/components/global/toggle-theme";
 
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuIndicator,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  NavigationMenuViewport,
+} from "@/components/ui/navigation-menu";
+import ListItem from "@/components/global/list-item";
 
 const menu = [
   {
-    title: "Home",
-    path: "/",
+    title: "All",
+    path: "/search",
   },
   {
-    title: "About",
-    path: "/about",
+    title: "Shirt",
+    path: "/search/shirt",
   },
   {
-    title: "Contact",
-    path: "/contact",
+    title: "Pants",
+    path: "/search/pants",
   },
+  {
+    title: "Accessories",
+    path: "/search/accessories",
+  }
 ];
 
 export default async function Navbar() {
-
+  
   return (
     <nav className="relative flex items-center justify-between p-4 lg:px-6">
-      <div className="block flex-none md:hidden">
-        <Link href="/" className="flex items-center justify-center">
-          <div className="flex-none text-sm font-medium uppercase">
-            <span className="">Home</span>
-          </div>
-        </Link>
-      </div>
+      <div className="block flex-none md:hidden"></div>
       <div className="flex w-full items-center">
         <div className="flex w-full md:w-1/3">
           <Link
@@ -39,7 +46,7 @@ export default async function Navbar() {
             className="mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6"
           >
             <div className="ml-2 flex-none text-sm font-medium uppercase md:hidden lg:block">
-              Clothes Shop
+              Clothes Shop's Logo
             </div>
           </Link>
           {menu.length ? (
@@ -58,11 +65,13 @@ export default async function Navbar() {
           ) : null}
         </div>
         <div className="hidden justify-center md:flex md:w-1/3">
-          <Search />
+          Clothes Shop
         </div>
 
         <div className="flex items-center justify-end md:w-1/3 gap-4">
+          <Search />
           <ModeToggle />
+          <span>User</span>
           <span>Cart</span>
         </div>
       </div>
