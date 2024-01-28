@@ -18,7 +18,11 @@ export default function HomePage() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://jsonplaceholder.typicode.com/posts"
+          "https://jsonplaceholder.typicode.com/photos", {
+            params: {
+              albumId: 1,
+            }
+          }
         );
         setPhotos(response.data);
       } catch (error) {

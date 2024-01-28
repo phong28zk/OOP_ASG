@@ -31,11 +31,10 @@ const menu = [
   {
     title: "Accessories",
     path: "/search/accessories",
-  }
+  },
 ];
 
 export default async function Navbar() {
-  
   return (
     <nav className="relative flex items-center justify-between p-4 lg:px-6">
       <div className="block flex-none md:hidden"></div>
@@ -65,10 +64,15 @@ export default async function Navbar() {
           ) : null}
         </div>
         <div className="hidden justify-center md:flex md:w-1/3">
-          Clothes Shop
+          <Link
+            href="/"
+            className="mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6"
+          >
+            Clothes Shop
+          </Link>
         </div>
 
-        <div className="flex items-center justify-end md:w-1/3 gap-4">
+        <div className="flex items-center justify-end md:w-1/3 gap-2">
           <Search />
           <ModeToggle />
           <span>User</span>
