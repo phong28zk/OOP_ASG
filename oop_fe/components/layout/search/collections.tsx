@@ -1,7 +1,6 @@
 'use client'
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Link from "next/link";
 import { Suspense } from "react";
 import FilterList from "./filter";
 
@@ -19,7 +18,7 @@ export default function Collections() {
 
   useEffect(() => {
     axios
-      .get("https://api.escuelajs.co/api/v1/categories")
+      .get("http://localhost:8080/api/category/get/all")
       .then((response) => {
         const data: any[] = response.data;
         const updatedCollections = [
@@ -29,7 +28,7 @@ export default function Collections() {
           },
           ...data.map((category) => ({
             title: category.name,
-            path: `/search/${category.name.toLowerCase()}`,
+            path: `/search/${category.id}`,
           })),
         ];
         setCollections(updatedCollections);

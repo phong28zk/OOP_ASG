@@ -23,10 +23,7 @@ export default async function CategoryPage({
         <Separator orientation="vertical" />
         <div className="order-last min-h-screen w-full md:order-none">
           <ProductGridItems
-            categoryName={
-              params.category === "all" ? "all" : params.category
-            }
-            params={params} // Pass the params as a prop
+            params={{ id: params.category }}
           />
         </div>
         <Separator orientation="vertical" />

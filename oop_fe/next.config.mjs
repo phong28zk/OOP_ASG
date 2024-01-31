@@ -17,6 +17,11 @@ const nextConfig = {
         hostname: "i.imagur.com",
         pathname: "**",
       },
+      {
+        protocol: "http",
+        hostname: "dummyimage.com",
+        pathname: "**",
+      }
     ],
   },
 };
