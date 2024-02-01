@@ -14,6 +14,10 @@ import {
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
 import ListItem from "@/components/global/list-item";
+import { Button } from "@/components/ui/button";
+
+import { FaRegUser } from "react-icons/fa";
+import { RiShoppingCartLine } from "react-icons/ri";
 
 const menu = [
   {
@@ -22,15 +26,15 @@ const menu = [
   },
   {
     title: "Shirt",
-    path: "/search/shirt",
+    path: "/search/1",
   },
   {
     title: "Pants",
-    path: "/search/pants",
+    path: "/search/2",
   },
   {
     title: "Accessories",
-    path: "/search/accessories",
+    path: "/search/3",
   },
 ];
 
@@ -75,8 +79,14 @@ export default async function Navbar() {
         <div className="flex items-center justify-end md:w-1/3 gap-2">
           <Search />
           <ModeToggle />
-          <span>User</span>
-          <span>Cart</span>
+          <Link href="/auth/login">
+            <Button variant="outline" size="custom">
+              <FaRegUser />
+            </Button>
+          </Link>
+          <Button variant="outline" size="custom">
+            <RiShoppingCartLine />
+          </Button>
         </div>
       </div>
     </nav>
