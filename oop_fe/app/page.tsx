@@ -10,21 +10,29 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Image from "next/image";
+import Link from "next/link";
+
+interface Product {
+  id: number;
+  name: string;
+  image: string;
+  price: number;
+  category: {
+    id: number;
+    name: string;
+  };
+}
 
 export default function HomePage() {
-  const [photos, setPhotos] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://jsonplaceholder.typicode.com/photos", {
-            params: {
-              albumId: 1,
-            }
-          }
+          "http://localhost:8080/api/item/get/all"
         );
-        setPhotos(response.data);
+        setProducts(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -42,23 +50,22 @@ export default function HomePage() {
           gap-4 w-full
           "
           >
-            {photos.map((photo) => (
-              <Card key={photo.id}>
-                <CardContent
-                  className="flex items-center justify-center"
-                >
-                  <Image
-                    src={photo.url}
-                    alt={photo.title}
-                    width={300}
-                    height={300}
-                    className="mt-8"
-                  />
+            {products.map((product) => (
+              <Card key={product.id}>
+                <CardContent className="flex items-center justify-center">
+                  <Link href={`/product/${product.id}`}>
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      width={200}
+                      height={200}
+                    />
+                  </Link>
                 </CardContent>
                 <CardFooter className="flex flex-col">
-                  <CardTitle className="text-[12px]">{photo.title}</CardTitle>
-                  <CardTitle className="text-[12px]">{photo.albumId}</CardTitle>
-                  <CardTitle className="text-[12px]">{photo.id}</CardTitle>
+                  <CardTitle className="text-[12px]">{product.price}</CardTitle>
+                  <CardTitle className="text-[12px]">{product.name}</CardTitle>
+                  <CardTitle className="text-[12px]">{product.id}</CardTitle>
                 </CardFooter>
               </Card>
             ))}
