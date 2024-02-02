@@ -1,4 +1,5 @@
-import * as React from "react";
+"use client";
+import react, { useState, useEffect, useLayoutEffect } from "react";
 import Link from "next/link";
 import Search from "./search";
 import { ModeToggle } from "@/components/global/toggle-theme";
@@ -15,9 +16,10 @@ import {
 } from "@/components/ui/navigation-menu";
 import ListItem from "@/components/global/list-item";
 import { Button } from "@/components/ui/button";
-
 import { FaRegUser } from "react-icons/fa";
 import { RiShoppingCartLine } from "react-icons/ri";
+import { IoLogOutOutline } from "react-icons/io5";
+import { useRouter } from "next/navigation";
 
 const menu = [
   {
@@ -38,7 +40,32 @@ const menu = [
   },
 ];
 
-export default async function Navbar() {
+interface SessionProps {
+  fullName: string;
+  email: string;
+}
+
+export default function Navbar() {
+
+  const router = useRouter();
+  const [user, setUser] = useState<SessionProps | null>(null);
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      setUser(JSON.parse(user));
+    }
+  }, []);
+
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    router.push("/auth/login"); 
+  };
+
+  console.log("user:", user)
+
+
   return (
     <nav className="relative flex items-center justify-between p-4 lg:px-6">
       <div className="block flex-none md:hidden"></div>
@@ -76,18 +103,36 @@ export default async function Navbar() {
           </Link>
         </div>
 
-        <div className="flex items-center justify-end md:w-1/3 gap-2">
-          <Search />
-          <ModeToggle />
-          <Link href="/auth/login">
-            <Button variant="outline" size="custom">
-              <FaRegUser />
+        {user ? (
+          <div className="flex items-center justify-end md:w-1/3 gap-2">
+            <Search />
+            <ModeToggle />
+            <Link href="/profile">
+              <Button variant="outline" size="custom">
+                <FaRegUser />
+              </Button>
+            </Link>
+            <Button variant="outline" size="custom" onClick={handleLogout}>
+              <IoLogOutOutline />
             </Button>
-          </Link>
-          <Button variant="outline" size="custom">
-            <RiShoppingCartLine />
-          </Button>
-        </div>
+            <Button variant="outline" size="custom">
+              <RiShoppingCartLine />
+            </Button>
+          </div>
+        ) : (
+          <div className="flex items-center justify-end md:w-1/3 gap-2">
+            <Search />
+            <ModeToggle />
+            <Link href="/auth/login">
+              <Button variant="outline" size="custom">
+                <FaRegUser />
+              </Button>
+            </Link>
+            <Button variant="outline" size="custom">
+              <RiShoppingCartLine />
+            </Button>
+          </div>
+        )}
       </div>
     </nav>
   );

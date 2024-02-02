@@ -1,5 +1,4 @@
 "use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -17,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -27,18 +27,18 @@ const formSchema = z.object({
   }),
 });
 
+interface SessionProps {
+  fullName: string;
+  email: string;
+}
+
 export default function ProfileForm() {
-  // 1. Define your form.
+  const [user, setUser] = useState<SessionProps | null>(null);
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-    },
   });
 
-  const router = useRouter();
-
-  // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const response = await fetch("http://localhost:8080/api/user/login", {
@@ -48,13 +48,14 @@ export default function ProfileForm() {
         },
         body: JSON.stringify(values),
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         console.log("Login successful", data);
-        router.push("/"); 
+        localStorage.setItem("user", JSON.stringify(data));
+        setUser(data);
+        router.push("/");
       } else {
-        // Login failed
         const errorData = await response.json();
         console.error("Login failed", errorData);
       }
@@ -74,7 +75,12 @@ export default function ProfileForm() {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Input
+                    type="email"
+                    placeholder="shadcn"
+                    value={field.value || ""}
+                    onChange={field.onChange}
+                  />
                 </FormControl>
               </FormItem>
             )}
@@ -86,7 +92,12 @@ export default function ProfileForm() {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="shadcn" {...field} />
+                  <Input
+                    type="password"
+                    placeholder="shadcn"
+                    value={field.value || ""}
+                    onChange={field.onChange}
+                  />
                 </FormControl>
               </FormItem>
             )}
@@ -94,10 +105,12 @@ export default function ProfileForm() {
           <div className="flex flex-col gap-4">
             <Button type="submit">Submit</Button>
             <Link href="/auth/register">
-              <Button variant="link">
-                Don't have an account? &nbsp;
-                <p className=" text-blue-600">Register</p>
-              </Button>
+              <div className="flex flex-row justify-center items-center">
+                <p>Don't have an account?</p>
+                <Button variant="link">
+                  <p className=" text-blue-600">Register</p>
+                </Button>
+              </div>
             </Link>
           </div>
         </form>
