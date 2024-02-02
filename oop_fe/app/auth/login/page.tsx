@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -35,11 +36,31 @@ export default function ProfileForm() {
     },
   });
 
+  const router = useRouter();
+
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const response = await fetch("http://localhost:8080/api/user/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Login successful", data);
+        router.push("/"); 
+      } else {
+        // Login failed
+        const errorData = await response.json();
+        console.error("Login failed", errorData);
+      }
+    } catch (error) {
+      console.error("An error occurred while logging in", error);
+    }
   }
 
   return (

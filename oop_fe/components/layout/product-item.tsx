@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
@@ -25,9 +25,11 @@ export default function ProductGridItems({ params }: ProductGridItemsProps) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8080/api/item/get/all/${params.id}`
-        );
+        let url = "http://localhost:8080/api/item/get/all";
+        if(params.id !== undefined) {
+          url = `http://localhost:8080/api/item/get/all/${params.id}`
+        }
+        const response = await axios.get(url);
         setProducts(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -57,9 +59,7 @@ export default function ProductGridItems({ params }: ProductGridItemsProps) {
             <div className="flex flex-col items-center justify-center">
               <Link href={`/product/${product.id}`}>{product.name}</Link>
               <div className="flex flex-col items-center justify-center">
-                <span className="text-lg font-semibold">
-                  ${product.price}
-                </span>
+                <span className="text-lg font-semibold">${product.price}</span>
               </div>
             </div>
           </div>
