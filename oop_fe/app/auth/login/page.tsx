@@ -15,8 +15,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "@/components/provider";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -33,8 +34,9 @@ interface SessionProps {
 }
 
 export default function ProfileForm() {
-  const [user, setUser] = useState<SessionProps | null>(null);
+  const { setUser } = useContext(UserContext);
   const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -53,8 +55,10 @@ export default function ProfileForm() {
         const data = await response.json();
         console.log("Login successful", data);
         localStorage.setItem("user", JSON.stringify(data));
+        console.log(localStorage.getItem("user"));
         setUser(data);
-        router.push("/");
+        
+        console.log(data);
       } else {
         const errorData = await response.json();
         console.error("Login failed", errorData);
@@ -64,6 +68,10 @@ export default function ProfileForm() {
     }
   }
 
+  const handleSubmit = () => {
+    router.push("/");
+  }
+  
   return (
     <section className="flex items-center justify-center min-h-screen">
       <Form {...form}>
@@ -103,7 +111,7 @@ export default function ProfileForm() {
             )}
           />
           <div className="flex flex-col gap-4">
-            <Button type="submit">Submit</Button>
+            <Button type="submit" onClick={handleSubmit}>Submit</Button>
             <Link href="/auth/register">
               <div className="flex flex-row justify-center items-center">
                 <p>Don't have an account?</p>

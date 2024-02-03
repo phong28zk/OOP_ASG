@@ -1,5 +1,5 @@
 "use client";
-import react, { useState, useEffect, useLayoutEffect } from "react";
+import react, { useState, useEffect, useLayoutEffect, useContext } from "react";
 import Link from "next/link";
 import Search from "./search";
 import { ModeToggle } from "@/components/global/toggle-theme";
@@ -20,6 +20,7 @@ import { FaRegUser } from "react-icons/fa";
 import { RiShoppingCartLine } from "react-icons/ri";
 import { IoLogOutOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
+import { UserContext } from "@/components/provider";
 
 const menu = [
   {
@@ -46,25 +47,16 @@ interface SessionProps {
 }
 
 export default function Navbar() {
-
   const router = useRouter();
-  const [user, setUser] = useState<SessionProps | null>(null);
+  const { user, setUser } = useContext(UserContext);
 
-  useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) {
-      setUser(JSON.parse(user));
-    }
-  }, []);
-
+  console.log("user:", user);
 
   const handleLogout = () => {
+    setUser(null);
     localStorage.removeItem("user");
-    router.push("/auth/login"); 
+    router.push("/auth/login");
   };
-
-  console.log("user:", user)
-
 
   return (
     <nav className="relative flex items-center justify-between p-4 lg:px-6">
