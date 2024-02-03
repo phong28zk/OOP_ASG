@@ -50,7 +50,7 @@ export default function Navbar() {
   const router = useRouter();
   const { user, setUser } = useContext(UserContext);
 
-  console.log("user:", user);
+  console.log("user: ", user);
 
   const handleLogout = () => {
     setUser(null);
