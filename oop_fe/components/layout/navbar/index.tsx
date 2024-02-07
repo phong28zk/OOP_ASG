@@ -20,7 +20,7 @@ import { FaRegUser } from "react-icons/fa";
 import { RiShoppingCartLine } from "react-icons/ri";
 import { IoLogOutOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
-import { UserContext } from "@/components/provider";
+import { UserContext } from "@/components/context/user-provider";
 
 const menu = [
   {

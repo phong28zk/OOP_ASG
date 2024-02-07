@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
-import { UserContext } from "@/components/provider";
+import { UserContext } from "@/components/context/user-provider";
 
 const formSchema = z.object({
   email: z.string().email({

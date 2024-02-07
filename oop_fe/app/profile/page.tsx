@@ -1,5 +1,5 @@
 "use client";
-import { UserContext } from "@/components/provider";
+import { UserContext } from "@/components/context/user-provider";
 import { User } from "lucide-react";
 import React, { useContext } from "react";
 
