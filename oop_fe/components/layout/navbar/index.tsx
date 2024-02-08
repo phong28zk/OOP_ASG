@@ -2,8 +2,10 @@
 import react, { useState, useEffect, useLayoutEffect, useContext } from "react";
 import Link from "next/link";
 import Search from "./search";
-import { ModeToggle } from "@/components/global/toggle-theme";
 
+import { useRouter } from "next/navigation";
+import { UserContext } from "@/components/context/user-provider";
+import { useShoppingCart } from "@/components/context/cart-provider";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -19,8 +21,18 @@ import { Button } from "@/components/ui/button";
 import { FaRegUser } from "react-icons/fa";
 import { RiShoppingCartLine } from "react-icons/ri";
 import { IoLogOutOutline } from "react-icons/io5";
-import { useRouter } from "next/navigation";
-import { UserContext } from "@/components/context/user-provider";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { ModeToggle } from "@/components/global/toggle-theme";
+import { SheetCart } from "@/components/cart/sheet-cart";
 
 const menu = [
   {
@@ -48,7 +60,10 @@ interface SessionProps {
 
 export default function Navbar() {
   const router = useRouter();
+  const [showCart, setShowCart] = useState(false);
   const { user, setUser } = useContext(UserContext);
+  const { openCart, cartQuantity } = useShoppingCart();
+  const { isOpen } = useShoppingCart();
 
   console.log("user: ", user);
 
@@ -57,6 +72,12 @@ export default function Navbar() {
     localStorage.removeItem("user");
     router.push("/auth/login");
   };
+
+  const handleCart = () => {
+    openCart();
+    setShowCart(true);
+  };
+  console.log(isOpen);
 
   return (
     <nav className="relative flex items-center justify-between p-4 lg:px-6">
@@ -107,9 +128,23 @@ export default function Navbar() {
             <Button variant="outline" size="custom" onClick={handleLogout}>
               <IoLogOutOutline />
             </Button>
-            <Button variant="outline" size="custom">
-              <RiShoppingCartLine />
-            </Button>
+
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button onClick={handleCart} variant="outline" size="custom">
+                  <RiShoppingCartLine />
+                  {cartQuantity}
+                </Button>
+              </SheetTrigger>
+              <SheetContent>
+                <SheetHeader></SheetHeader>
+                <SheetFooter className="fixed bottom-0 left-0 w-full p-4">
+                  <SheetClose asChild>
+                    <Button type="submit">Save changes</Button>
+                  </SheetClose>
+                </SheetFooter>
+              </SheetContent>
+            </Sheet>
           </div>
         ) : (
           <div className="flex items-center justify-end md:w-1/3 gap-2">
@@ -120,7 +155,7 @@ export default function Navbar() {
                 <FaRegUser />
               </Button>
             </Link>
-            <Button variant="outline" size="custom">
+            <Button onClick={openCart} variant="outline" size="custom">
               <RiShoppingCartLine />
             </Button>
           </div>
