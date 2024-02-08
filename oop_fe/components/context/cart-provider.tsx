@@ -40,7 +40,7 @@ export function ShoppingCartProvider({ children }: ShippingCartProviderProps) {
 
   const openCart = () => {
     setIsOpen(true);
-    
+
   }
 
   const closeCart = () => {

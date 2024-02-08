@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/sheet";
 import { ModeToggle } from "@/components/global/toggle-theme";
 import { SheetCart } from "@/components/cart/sheet-cart";
+import { CartItem } from "@/components/cart/cart-item";
 
 const menu = [
   {
@@ -64,6 +65,7 @@ export default function Navbar() {
   const { user, setUser } = useContext(UserContext);
   const { openCart, cartQuantity } = useShoppingCart();
   const { isOpen } = useShoppingCart();
+  const { cartItems } = useShoppingCart();
 
   console.log("user: ", user);
 
@@ -138,9 +140,24 @@ export default function Navbar() {
               </SheetTrigger>
               <SheetContent>
                 <SheetHeader></SheetHeader>
+                <SheetDescription>
+                  {cartItems.length ? (
+                    <ul className="divide-y divide-neutral-100 dark:divide-neutral-800 m-4">
+                      {cartItems.map((item) => (
+                        <CartItem key={item.id} {...item} />
+                      ))}
+                    </ul>
+                  ) : (
+                    <div className="flex items-center justify-center h-64">
+                      <p className="text-lg font-medium text-neutral-500 dark:text-neutral-400">
+                        Your cart is empty
+                      </p>
+                    </div>
+                  )}
+                </SheetDescription>
                 <SheetFooter className="fixed bottom-0 left-0 w-full p-4">
                   <SheetClose asChild>
-                    <Button type="submit">Save changes</Button>
+                    <Button type="submit">Submit</Button>
                   </SheetClose>
                 </SheetFooter>
               </SheetContent>
