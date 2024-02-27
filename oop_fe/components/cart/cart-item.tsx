@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { useShoppingCart } from "../context/cart-provider";
 import { Sheet } from "../ui/sheet";
+import { UserContext } from "../context/user-provider";
+import Image from "next/image";
 
 type CartItemProps = {
   id: number;
@@ -14,11 +16,13 @@ type Item = {
   name: string;
   price: number;
   image: string;
-}
+};
 
 export function CartItem({ id, quantity }: CartItemProps) {
   const { removeFromCart } = useShoppingCart();
   const [item, setItem] = useState<Item | null>(null);
+
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     const fetchItem = async () => {
@@ -39,31 +43,36 @@ export function CartItem({ id, quantity }: CartItemProps) {
 
   return (
     <Sheet>
-      <img
-        src={item.image}
-        style={{ width: "125px", height: "75px", objectFit: "cover" }}
-      />
-      <div className="me-auto">
-        <div>
-          {item.name}{" "}
-          {quantity > 1 && (
-            <span className="text-muted" style={{ fontSize: ".65rem" }}>
-              x{quantity}
-            </span>
-          )}
+      <div className="flex flex-row justify-center items-center gap-4 mt-2">
+        <Image
+          alt={item.name}
+          src={item.image}
+          width={`75`}
+          height={`75`}
+          objectFit="cover"
+        />
+        <div className="flex flex-row">
+          <div className="">
+            <div>
+              {item.name}{" "}
+              {quantity > 1 && (
+                <span className="" style={{ fontSize: ".65rem" }}>
+                  x{quantity}
+                </span>
+              )}
+            </div>
+            <div> {item.price * quantity}</div>
+          </div>
         </div>
-        <div className="text-muted" style={{ fontSize: ".75rem" }}>
-          {item.price}
-        </div>
+        <Button
+          variant="destructive"
+          size="sm"
+          onClick={() => removeFromCart(item.id)}
+          className="ml-auto"
+        >
+          &times;
+        </Button>
       </div>
-      <div> {item.price * quantity}</div>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => removeFromCart(item.id)}
-      >
-        &times;
-      </Button>
     </Sheet>
   );
 }

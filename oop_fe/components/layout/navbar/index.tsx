@@ -34,6 +34,7 @@ import {
 import { ModeToggle } from "@/components/global/toggle-theme";
 import { SheetCart } from "@/components/cart/sheet-cart";
 import { CartItem } from "@/components/cart/cart-item";
+import axios from "axios";
 
 const menu = [
   {
@@ -80,6 +81,34 @@ export default function Navbar() {
     setShowCart(true);
   };
   console.log(isOpen);
+
+  const submitHandler = async (e: any) => {
+    const cartItems = JSON.parse(localStorage.getItem("cart") || "[]");
+    console.log(cartItems);
+
+    // const itemsToSubmit = cartItems.map((item: any) => {
+    //   return {
+    //     cartId: 18,
+    //     itemId: item.id,
+    //     quantity: item.quantity,
+    //     status: "pending",
+    //   };
+    // });
+
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/api/cart/buy/all/18`,
+        // itemsToSubmit,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    } catch (error) {
+      console.error("Error fetching item:", error);
+    }
+  };
 
   return (
     <nav className="relative flex items-center justify-between p-4 lg:px-6">
@@ -143,6 +172,7 @@ export default function Navbar() {
                 <SheetDescription>
                   {cartItems.length ? (
                     <ul className="divide-y divide-neutral-100 dark:divide-neutral-800 m-4">
+                      <div>User: {user ? user.fullName : "Guest"}</div>
                       {cartItems.map((item) => (
                         <CartItem key={item.id} {...item} />
                       ))}
@@ -157,7 +187,9 @@ export default function Navbar() {
                 </SheetDescription>
                 <SheetFooter className="fixed bottom-0 left-0 w-full p-4">
                   <SheetClose asChild>
-                    <Button type="submit">Submit</Button>
+                    <Button type="submit" onClick={submitHandler}>
+                      Submit
+                    </Button>
                   </SheetClose>
                 </SheetFooter>
               </SheetContent>

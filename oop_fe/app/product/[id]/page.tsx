@@ -22,6 +22,7 @@ interface Product {
   name: string;
   image: string;
   price: number;
+  count: number;
   category: {
     id: number;
     name: string;
@@ -31,6 +32,7 @@ interface Product {
 const Product = () => {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product | null>(null);
+  const router = useRouter();
   const {
     getItemQuantity,
     increaseCartQuantity,
@@ -60,58 +62,74 @@ const Product = () => {
     <div className="flex items-center justify-center">
       {product && (
         <Card className="w-[800px] m-4 items-center justify-center">
-          <CardHeader>
+          <CardHeader className="flex flex-row gap-4">
+            <Button
+              variant="default"
+              onClick={() => {
+                router.push("/");
+              }}
+            >
+              {`<-`}
+            </Button>
             <CardTitle>{product.name}</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="flex items-center justify-center">
-              <Image
-                src={product.image}
-                alt={product.name}
-                width={200}
-                height={200}
-              />
-            </div>
-          </CardContent>
-          <CardContent>
-            <p className="text-[20px] border-spacing-1">{product.price}$</p>
-          </CardContent>
-          {quantity === 0 ? (
-            <CardContent className="flex items-center justify-center">
-              <Button
-                variant="default"
-                onClick={() => increaseCartQuantity(Number(id))}
-              >
-                Add To Cart
-              </Button>
+          <CardContent className="flex flex-row justify-start">
+            <CardContent>
+              <div className="flex items-center justify-center">
+                <Image
+                  src={product.image}
+                  alt={product.name}
+                  width={200}
+                  height={200}
+                />
+              </div>
             </CardContent>
-          ) : (
-            <div className="flex flex-col justify-center items-center">
-              <CardContent className="flex items-center justify-center">
-                <Button
-                  variant="default"
-                  onClick={() => increaseCartQuantity(Number(id))}
-                >
-                  +
-                </Button>
-                <Label className="m-4">{quantity}</Label>
-                <Button
-                  variant="default"
-                  onClick={() => decreaseCartQuantity(Number(id))}
-                >
-                  -
-                </Button>
-              </CardContent>
+            <CardContent className="">
               <CardContent>
-                <Button
-                  variant="default"
-                  onClick={() => removeFromCart(Number(id))}
-                >
-                  Remove
-                </Button>
+                <p className="text-[20px] border-spacing-1">{product.name}</p>
+                <p className="text-[20px] border-spacing-1">{product.price}$</p>
+                <p className="text-[20px] border-spacing-1">
+                  Product in stock: {product.count}
+                </p>
               </CardContent>
-            </div>
-          )}
+              {quantity === 0 ? (
+                <CardContent className="flex items-center justify-start">
+                  <Button
+                    variant="default"
+                    onClick={() => increaseCartQuantity(Number(id))}
+                  >
+                    Add To Cart
+                  </Button>
+                </CardContent>
+              ) : (
+                <div className="flex flex-col justify-start">
+                  <CardContent className="flex justify-start">
+                    <Button
+                      variant="default"
+                      onClick={() => increaseCartQuantity(Number(id))}
+                    >
+                      +
+                    </Button>
+                    <Label className="m-4">{quantity}</Label>
+                    <Button
+                      variant="default"
+                      onClick={() => decreaseCartQuantity(Number(id))}
+                    >
+                      -
+                    </Button>
+                  </CardContent>
+                  <CardContent>
+                    <Button
+                      variant="default"
+                      onClick={() => removeFromCart(Number(id))}
+                    >
+                      Remove
+                    </Button>
+                  </CardContent>
+                </div>
+              )}
+            </CardContent>
+          </CardContent>
         </Card>
       )}
     </div>
