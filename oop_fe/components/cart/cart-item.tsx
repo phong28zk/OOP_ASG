@@ -1,14 +1,14 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { useShoppingCart } from "../context/cart-provider";
 import { Sheet } from "../ui/sheet";
-import { UserContext } from "../context/user-provider";
 import Image from "next/image";
 
 type CartItemProps = {
   id: number;
   quantity: number;
+  name: string;
 };
 
 type Item = {
@@ -21,8 +21,6 @@ type Item = {
 export function CartItem({ id, quantity }: CartItemProps) {
   const { removeFromCart } = useShoppingCart();
   const [item, setItem] = useState<Item | null>(null);
-
-  const { user } = useContext(UserContext);
 
   useEffect(() => {
     const fetchItem = async () => {

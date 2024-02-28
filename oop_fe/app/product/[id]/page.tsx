@@ -48,9 +48,7 @@ const Product = () => {
   };
 
   const handleDecreaseLocalQuantity = () => {
-    if (localQuantity > 0) {
-      setLocalQuantity(localQuantity - 1);
-    }
+    setLocalQuantity(localQuantity - 1);
   };
 
   const handleSubmitCart = () => {
@@ -60,7 +58,7 @@ const Product = () => {
 
   const removeLocalQuantity = () => {
     setLocalQuantity(0);
-  }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -129,6 +127,7 @@ const Product = () => {
                     <Button
                       variant="default"
                       onClick={() => handleIncreaseLocalQuantity()}
+                      disabled={localQuantity >= product.count}
                     >
                       +
                     </Button>
@@ -136,11 +135,12 @@ const Product = () => {
                     <Button
                       variant="default"
                       onClick={() => handleDecreaseLocalQuantity()}
+                      disabled={localQuantity <= 0}
                     >
                       -
                     </Button>
                   </CardContent>
-                  <CardContent>
+                  <CardContent className={`flex flex-row justify-start gap-4`}>
                     <Button
                       variant="default"
                       onClick={() => handleSubmitCart()}
@@ -148,8 +148,6 @@ const Product = () => {
                     >
                       Submit
                     </Button>
-                  </CardContent>
-                  <CardContent>
                     <Button
                       variant="default"
                       onClick={() => removeLocalQuantity()}

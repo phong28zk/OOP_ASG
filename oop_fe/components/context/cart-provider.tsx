@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 type ShippingCartProviderProps = {
   children: React.ReactNode;
@@ -17,8 +17,12 @@ type ShoppingCartContext = {
   openCart: () => void;
   closeCart: () => void;
   getItemQuantity: (id: number) => number;
-  increaseCartQuantity: (id: number) => void;
-  increaseCartManyQuantities: (id: number, quantity: number) => void;
+  increaseCartQuantity: (id: number, name: string) => void;
+  increaseCartManyQuantities: (
+    id: number,
+    quantity: number,
+    name: string
+  ) => void;
   decreaseCartQuantity: (id: number) => void;
   removeFromCart: (id: number) => void;
   cartQuantity: number;
@@ -41,27 +45,24 @@ export function ShoppingCartProvider({ children }: ShippingCartProviderProps) {
 
   const openCart = () => {
     setIsOpen(true);
-
-  }
+  };
 
   const closeCart = () => {
     setIsOpen(false);
-  }
-
-  console.log(isOpen);
+  };
 
   function getItemQuantity(id: number) {
     return cartItems.find((item) => item.id === id)?.quantity || 0;
   }
 
-  function increaseCartQuantity(id: number) {
+  function increaseCartQuantity(id: number, name: string) {
     setCartItems((currItems) => {
       if (currItems.find((item) => item.id === id) == null) {
-        return [...currItems, { id, name: "Product", quantity: 1 }];
+        return [...currItems, { id, name, quantity: 1 }];
       } else {
         return currItems.map((item) => {
           if (item.id === id) {
-            return { ...item, quantity: item.quantity + 1 };
+            return { ...item, name, quantity: item.quantity + 1 };
           } else {
             return item;
           }
@@ -70,14 +71,18 @@ export function ShoppingCartProvider({ children }: ShippingCartProviderProps) {
     });
   }
 
-  function increaseCartManyQuantities(id: number, quantity: number) {
+  function increaseCartManyQuantities(
+    id: number,
+    quantity: number,
+    name: string
+  ) {
     setCartItems((currItems) => {
       if (currItems.find((item) => item.id === id) == null) {
-        return [...currItems, { id, name: "Product", quantity: quantity }];
+        return [...currItems, { id, name, quantity: quantity }];
       } else {
         return currItems.map((item) => {
           if (item.id === id) {
-            return { ...item, quantity: item.quantity + quantity };
+            return { ...item, name, quantity: item.quantity + quantity };
           } else {
             return item;
           }
@@ -85,6 +90,10 @@ export function ShoppingCartProvider({ children }: ShippingCartProviderProps) {
       }
     });
   }
+
+  useEffect(() => {
+    console.log("cartItems: ", cartItems);
+  }, [cartItems]);
 
   function decreaseCartQuantity(id: number) {
     setCartItems((currItems) => {
@@ -118,7 +127,7 @@ export function ShoppingCartProvider({ children }: ShippingCartProviderProps) {
         openCart,
         closeCart,
         cartItems,
-        cartQuantity
+        cartQuantity,
       }}
     >
       {children}

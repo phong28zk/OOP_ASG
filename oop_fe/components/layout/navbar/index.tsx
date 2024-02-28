@@ -1,5 +1,5 @@
 "use client";
-import react, { useState, useEffect, useLayoutEffect, useContext } from "react";
+import react, { useState, useContext } from "react";
 import Link from "next/link";
 import Search from "./search";
 
@@ -27,14 +27,10 @@ import {
   SheetContent,
   SheetDescription,
   SheetFooter,
-  SheetHeader,
-  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { ModeToggle } from "@/components/global/toggle-theme";
-import { SheetCart } from "@/components/cart/sheet-cart";
 import { CartItem } from "@/components/cart/cart-item";
-import axios from "axios";
 
 const menu = [
   {
@@ -55,16 +51,12 @@ const menu = [
   },
 ];
 
-
 export default function Navbar() {
   const router = useRouter();
   const [showCart, setShowCart] = useState(false);
   const { user, setUser } = useContext(UserContext);
   const { openCart, cartQuantity } = useShoppingCart();
-  const { isOpen } = useShoppingCart();
   const { cartItems } = useShoppingCart();
-
-  console.log("user: ", user);
 
   const handleLogout = () => {
     setUser(null);
@@ -76,12 +68,12 @@ export default function Navbar() {
     openCart();
     setShowCart(true);
   };
-  console.log(isOpen);
 
-  const submitHandler = async (e: any) => {
-    e.preventDefault();
+  const submitCartHandler = () => {
+    setShowCart(false);
+    localStorage.setItem("cart", JSON.stringify(cartItems));
     cartItems.length !== 0 && router.push("/checkout");
-    
+    console.log("cartItems: ", cartItems);
   };
 
   return (
@@ -148,7 +140,9 @@ export default function Navbar() {
                       <div>User: {user ? user.fullName : "Guest"}</div>
                       {cartItems.map((item) => (
                         <CartItem key={item.id} {...item} />
+                        
                       ))}
+                      
                     </ul>
                   ) : (
                     <div className="flex items-center justify-center h-64">
@@ -160,10 +154,13 @@ export default function Navbar() {
                 </SheetDescription>
                 <SheetFooter className="fixed bottom-0 left-0 w-full p-4">
                   <SheetClose asChild>
-                    <Button type="submit" className="w-[80px]" onClick={() => {
-                      cartItems.length !== 0 &&
-                      router.push("/checkout");
-                    }}>
+                    <Button
+                      type="submit"
+                      className="w-[80px]"
+                      onClick={() => {
+                        submitCartHandler();
+                      }}
+                    >
                       Submit
                     </Button>
                   </SheetClose>
