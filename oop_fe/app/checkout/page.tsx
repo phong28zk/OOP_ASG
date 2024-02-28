@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 interface CartItem {
   id: number;
@@ -50,9 +51,9 @@ const CheckoutPage = () => {
   }, []);
 
   return (
-    <div className="w-[800px] px-16 py-4 justify-center items-center">
+    <div className="flex flex-col px-32 py-4 w-full h-full">
       <h1>Checkout Page</h1>
-      <ul className="">
+      <ul className="items-center justify-start mb-4">
         {cartItems.map((item, index) => (
           <li key={index} className="mt-4">
             <Card className="flex flex-row max-w-[400px]">
@@ -73,6 +74,9 @@ const CheckoutPage = () => {
           </li>
         ))}
       </ul>
+      <Button variant="default" className="flex justify-end items-center mt-4 ml-auto">
+        Submit Order
+      </Button>
     </div>
   );
 };
