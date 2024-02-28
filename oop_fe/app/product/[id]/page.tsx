@@ -32,14 +32,32 @@ interface Product {
 const Product = () => {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product | null>(null);
+  const [localQuantity, setLocalQuantity] = useState(0);
   const router = useRouter();
   const {
     getItemQuantity,
     increaseCartQuantity,
+    increaseCartManyQuantities,
     decreaseCartQuantity,
     removeFromCart,
   } = useShoppingCart();
   const quantity = getItemQuantity(Number(id));
+
+  const handleIncreaseLocalQuantity = () => {
+    setLocalQuantity(localQuantity + 1);
+  }
+
+  const handleDecreaseLocalQuantity = () => {
+    if(localQuantity > 0) {
+      setLocalQuantity(localQuantity - 1);
+    }
+  }
+
+  const handleSubmitCart = () => {
+    increaseCartManyQuantities(Number(id), localQuantity);
+    setLocalQuantity(0);
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -92,11 +110,11 @@ const Product = () => {
                   Product in stock: {product.count}
                 </p>
               </CardContent>
-              {quantity === 0 ? (
+              {localQuantity === 0 ? (
                 <CardContent className="flex items-center justify-start">
                   <Button
                     variant="default"
-                    onClick={() => increaseCartQuantity(Number(id))}
+                    onClick={() => handleIncreaseLocalQuantity()}
                   >
                     Add To Cart
                   </Button>
@@ -106,16 +124,24 @@ const Product = () => {
                   <CardContent className="flex justify-start">
                     <Button
                       variant="default"
-                      onClick={() => increaseCartQuantity(Number(id))}
+                      onClick={() => handleIncreaseLocalQuantity()}
                     >
                       +
                     </Button>
-                    <Label className="m-4">{quantity}</Label>
+                    <Label className="m-4">{localQuantity}</Label>
                     <Button
                       variant="default"
-                      onClick={() => decreaseCartQuantity(Number(id))}
+                      onClick={() => handleDecreaseLocalQuantity()}
                     >
                       -
+                    </Button>
+                  </CardContent>
+                  <CardContent>
+                    <Button
+                      variant="default"
+                      onClick={() => handleSubmitCart()}
+                    >
+                      Submit
                     </Button>
                   </CardContent>
                   <CardContent>
@@ -126,6 +152,7 @@ const Product = () => {
                       Remove
                     </Button>
                   </CardContent>
+                  
                 </div>
               )}
             </CardContent>

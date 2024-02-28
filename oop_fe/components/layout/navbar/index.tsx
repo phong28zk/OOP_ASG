@@ -55,10 +55,6 @@ const menu = [
   },
 ];
 
-interface SessionProps {
-  fullName: string;
-  email: string;
-}
 
 export default function Navbar() {
   const router = useRouter();
@@ -83,31 +79,9 @@ export default function Navbar() {
   console.log(isOpen);
 
   const submitHandler = async (e: any) => {
-    const cartItems = JSON.parse(localStorage.getItem("cart") || "[]");
-    console.log(cartItems);
-
-    // const itemsToSubmit = cartItems.map((item: any) => {
-    //   return {
-    //     cartId: 18,
-    //     itemId: item.id,
-    //     quantity: item.quantity,
-    //     status: "pending",
-    //   };
-    // });
-
-    try {
-      const response = await axios.post(
-        `http://localhost:8080/api/cart/buy/all/18`,
-        // itemsToSubmit,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-    } catch (error) {
-      console.error("Error fetching item:", error);
-    }
+    e.preventDefault();
+    cartItems.length !== 0 && router.push("/checkout");
+    
   };
 
   return (
@@ -168,7 +142,6 @@ export default function Navbar() {
                 </Button>
               </SheetTrigger>
               <SheetContent>
-                <SheetHeader></SheetHeader>
                 <SheetDescription>
                   {cartItems.length ? (
                     <ul className="divide-y divide-neutral-100 dark:divide-neutral-800 m-4">
@@ -187,7 +160,10 @@ export default function Navbar() {
                 </SheetDescription>
                 <SheetFooter className="fixed bottom-0 left-0 w-full p-4">
                   <SheetClose asChild>
-                    <Button type="submit" onClick={submitHandler}>
+                    <Button type="submit" className="w-[80px]" onClick={() => {
+                      cartItems.length !== 0 &&
+                      router.push("/checkout");
+                    }}>
                       Submit
                     </Button>
                   </SheetClose>

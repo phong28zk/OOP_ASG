@@ -43,7 +43,7 @@ export function CartItem({ id, quantity }: CartItemProps) {
 
   return (
     <Sheet>
-      <div className="flex flex-row justify-center items-center gap-4 mt-2">
+      <div className="flex flex-row justify-center items-center gap-4 py-2">
         <Image
           alt={item.name}
           src={item.image}
