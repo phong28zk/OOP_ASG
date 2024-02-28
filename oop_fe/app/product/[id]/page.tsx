@@ -45,16 +45,20 @@ const Product = () => {
 
   const handleIncreaseLocalQuantity = () => {
     setLocalQuantity(localQuantity + 1);
-  }
+  };
 
   const handleDecreaseLocalQuantity = () => {
-    if(localQuantity > 0) {
+    if (localQuantity > 0) {
       setLocalQuantity(localQuantity - 1);
     }
-  }
+  };
 
   const handleSubmitCart = () => {
     increaseCartManyQuantities(Number(id), localQuantity);
+    setLocalQuantity(0);
+  };
+
+  const removeLocalQuantity = () => {
     setLocalQuantity(0);
   }
 
@@ -140,6 +144,7 @@ const Product = () => {
                     <Button
                       variant="default"
                       onClick={() => handleSubmitCart()}
+                      className="w-[80px]"
                     >
                       Submit
                     </Button>
@@ -147,12 +152,12 @@ const Product = () => {
                   <CardContent>
                     <Button
                       variant="default"
-                      onClick={() => removeFromCart(Number(id))}
+                      onClick={() => removeLocalQuantity()}
+                      className="w-[80px]"
                     >
                       Remove
                     </Button>
                   </CardContent>
-                  
                 </div>
               )}
             </CardContent>
