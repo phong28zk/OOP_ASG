@@ -8,7 +8,6 @@ import Image from "next/image";
 type CartItemProps = {
   id: number;
   quantity: number;
-  name: string;
 };
 
 type Item = {

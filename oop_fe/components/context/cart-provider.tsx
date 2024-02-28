@@ -8,7 +8,6 @@ type ShippingCartProviderProps = {
 
 type CartItem = {
   id: number;
-  name: string;
   quantity: number;
 };
 
@@ -21,7 +20,6 @@ type ShoppingCartContext = {
   increaseCartManyQuantities: (
     id: number,
     quantity: number,
-    name: string
   ) => void;
   decreaseCartQuantity: (id: number) => void;
   removeFromCart: (id: number) => void;
@@ -74,15 +72,14 @@ export function ShoppingCartProvider({ children }: ShippingCartProviderProps) {
   function increaseCartManyQuantities(
     id: number,
     quantity: number,
-    name: string
   ) {
     setCartItems((currItems) => {
       if (currItems.find((item) => item.id === id) == null) {
-        return [...currItems, { id, name, quantity: quantity }];
+        return [...currItems, { id, quantity: quantity }];
       } else {
         return currItems.map((item) => {
           if (item.id === id) {
-            return { ...item, name, quantity: item.quantity + quantity };
+            return { ...item, quantity: item.quantity + quantity };
           } else {
             return item;
           }

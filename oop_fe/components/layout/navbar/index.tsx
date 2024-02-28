@@ -89,7 +89,7 @@ const menu: { title: string; href: string; description: string }[] = [
       "A modal dialog that interrupts the user with important content and expects a response.",
   },
   {
-    title: "Category 10",
+    title: "Accessories",
     href: "/search/10",
     description:
       "A modal dialog that interrupts the user with important content and expects a response.",
@@ -151,7 +151,7 @@ export default function Navbar() {
                 </NavigationMenuContent>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <NavigationMenuTrigger>Shirt</NavigationMenuTrigger>
+                <NavigationMenuTrigger>Pants</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid grid-rows-3 gap-3 p-6 w-[250px]">
                     {menu.slice(3, 6).map((item, index) => (
@@ -165,7 +165,7 @@ export default function Navbar() {
                 </NavigationMenuContent>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <NavigationMenuTrigger>Shirt</NavigationMenuTrigger>
+                <NavigationMenuTrigger>Shoes</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid grid-rows-3 gap-3 p-6 w-[250px]">
                     {menu.slice(6, 9).map((item, index) => (
@@ -275,3 +275,4 @@ export default function Navbar() {
     </nav>
   );
 }
+

@@ -36,10 +36,7 @@ const Product = () => {
   const router = useRouter();
   const {
     getItemQuantity,
-    increaseCartQuantity,
     increaseCartManyQuantities,
-    decreaseCartQuantity,
-    removeFromCart,
   } = useShoppingCart();
   const quantity = getItemQuantity(Number(id));
 
@@ -93,7 +90,7 @@ const Product = () => {
             </Button>
             <CardTitle>{product.name}</CardTitle>
           </CardHeader>
-          <CardContent className="flex flex-row justify-start">
+          <CardContent className="flex flex-row justify-start px-4 pb-4 gap-4">
             <CardContent>
               <div className="flex items-center justify-center">
                 <Image
