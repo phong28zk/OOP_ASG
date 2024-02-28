@@ -63,7 +63,7 @@ export default function HomePage() {
                   </Link>
                 </CardContent>
                 <CardFooter className="flex flex-col">
-                  <CardTitle className="text-[12px]">{product.price}</CardTitle>
+                  <CardTitle className="text-[12px]">{product.price}$</CardTitle>
                   <CardTitle className="text-[12px]">{product.name}</CardTitle>
                   <CardTitle className="text-[12px]">{product.id}</CardTitle>
                 </CardFooter>

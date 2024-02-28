@@ -50,6 +50,10 @@ const CheckoutPage = () => {
     }
   }, []);
 
+  const handleSubmitDeal = () => {
+    // Submit order
+  }
+
   return (
     <div className="flex flex-col px-32 py-4 w-full h-full">
       <h1>Checkout Page</h1>
