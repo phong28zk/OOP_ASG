@@ -179,7 +179,6 @@ export default function Navbar() {
                 </NavigationMenuContent>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                
                 <Link href="/search/10" legacyBehavior passHref>
                   <NavigationMenuLink>
                     {menu.slice(9, 10).map((item, index) => (
