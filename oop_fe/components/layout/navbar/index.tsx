@@ -1,11 +1,10 @@
 "use client";
 import react, { useState, useContext } from "react";
 import Link from "next/link";
-import Search from "./search";
-
 import { useRouter } from "next/navigation";
 import { UserContext } from "@/components/context/user-provider";
 import { useShoppingCart } from "@/components/context/cart-provider";
+import dynamic from 'next/dynamic';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -17,7 +16,13 @@ import {
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
 
+import Search from "./search";
 import ListItem from "@/components/global/list-item";
+const ListItemWithNoSSR = dynamic(
+  () => import("@/components/global/list-item"),
+  { ssr: false }
+);
+
 import { Button } from "@/components/ui/button";
 import { FaRegUser } from "react-icons/fa";
 import { RiShoppingCartLine } from "react-icons/ri";
@@ -155,7 +160,7 @@ export default function Navbar() {
                 <NavigationMenuContent>
                   <ul className="grid grid-rows-3 gap-3 p-6 w-[250px]">
                     {menu.slice(3, 6).map((item, index) => (
-                      <ListItem
+                      <ListItemWithNoSSR
                         key={index}
                         title={item.title}
                         href={item.href}
@@ -169,7 +174,7 @@ export default function Navbar() {
                 <NavigationMenuContent>
                   <ul className="grid grid-rows-3 gap-3 p-6 w-[250px]">
                     {menu.slice(6, 9).map((item, index) => (
-                      <ListItem
+                      <ListItemWithNoSSR
                         key={index}
                         title={item.title}
                         href={item.href}
@@ -182,7 +187,7 @@ export default function Navbar() {
                 <Link href="/search/10" legacyBehavior passHref>
                   <NavigationMenuLink>
                     {menu.slice(9, 10).map((item, index) => (
-                      <ListItem
+                      <ListItemWithNoSSR
                         key={index}
                         title={item.title}
                         href={item.href}
