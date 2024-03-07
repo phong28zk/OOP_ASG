@@ -26,22 +26,28 @@ interface Product {
   };
 }
 
+const fetchProducts = async () => {
+  try {
+    const response = await axios.get(
+      "http://localhost:8080/api/item/get/all"
+    );
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return [];
+  }
+};
+
 export default function HomePage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8080/api/item/get/all"
-        );
-        setProducts(response.data);
-        setIsLoading(false);
-        // console.log("Data has been fetched:", response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
+      const data = await fetchProducts();
+      setProducts(data);
+      setIsLoading(false);
     };
     fetchData();
   }, []);
