@@ -136,7 +136,7 @@ export default function Navbar() {
             className="mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6"
           >
             <div className="ml-2 flex-none text-sm font-medium uppercase md:hidden lg:block">
-              Clothes Shop's Logo
+              Logo
             </div>
           </Link>
           <NavigationMenu>
@@ -202,7 +202,7 @@ export default function Navbar() {
         <div className="hidden justify-center md:flex md:w-1/3">
           <Link
             href="/"
-            className="mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6"
+            className="md:hidden mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6"
           >
             Clothes Shop
           </Link>

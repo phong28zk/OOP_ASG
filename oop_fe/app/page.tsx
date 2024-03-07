@@ -1,6 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+
 import axios from "axios";
+
 import {
   Card,
   CardContent,
@@ -9,8 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import Image from "next/image";
-import Link from "next/link";
+import { LoadingPage } from "@/components/global/loading";
 
 interface Product {
   id: number;
@@ -25,6 +28,7 @@ interface Product {
 
 export default function HomePage() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,12 +37,17 @@ export default function HomePage() {
           "http://localhost:8080/api/item/get/all"
         );
         setProducts(response.data);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-  }, []);
+  });
+
+  if(isLoading) {
+    return <LoadingPage/>;
+  }
 
   return (
     <>
