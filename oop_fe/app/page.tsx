@@ -38,12 +38,13 @@ export default function HomePage() {
         );
         setProducts(response.data);
         setIsLoading(false);
+        // console.log("Data has been fetched:", response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-  });
+  }, []);
 
   if(isLoading) {
     return <LoadingPage/>;
